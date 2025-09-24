@@ -1,0 +1,55 @@
+{% extends 'store/base.html' %}
+{% block title %}Shop · PageStore{% endblock %}
+{% block content %}
+  <section class="section">
+    <div class="section-header">
+      <h1>Shop</h1>
+    </div>
+    <form class="filters" method="get">
+      <input class="input" type="search" name="q" value="{{ request.GET.q }}" placeholder="Search products" />
+      <select class="select" name="size">
+        <option value="">Size</option>
+        <option{% if request.GET.size == 's' %} selected{% endif %} value="s">S</option>
+        <option{% if request.GET.size == 'm' %} selected{% endif %} value="m">M</option>
+        <option{% if request.GET.size == 'l' %} selected{% endif %} value="l">L</option>
+      </select>
+      <select class="select" name="gender">
+        <option value="">Gender</option>
+        <option{% if request.GET.gender == 'men' %} selected{% endif %} value="men">Men</option>
+        <option{% if request.GET.gender == 'women' %} selected{% endif %} value="women">Women</option>
+        <option{% if request.GET.gender == 'kids' %} selected{% endif %} value="kids">Kids</option>
+      </select>
+      <select class="select" name="category">
+        <option value="">Category</option>
+        <option value="tops">Tops</option>
+        <option value="bottoms">Bottoms</option>
+        <option value="accessories">Accessories</option>
+      </select>
+      <select class="select" name="color">
+        <option value="">Color</option>
+        <option value="black">Black</option>
+        <option value="white">White</option>
+        <option value="teal">Teal</option>
+      </select>
+      <select class="select" name="price">
+        <option value="">Price</option>
+        <option value="0-250">R0–R250</option>
+        <option value="250-500">R250–R500</option>
+        <option value=">500">R500+</option>
+      </select>
+      <button type="submit">Filter</button>
+    </form>
+
+    <div class="product-grid">
+      {% for i in "123456" %}
+      <a class="card" href="#">
+        <img src="https://images.unsplash.com/photo-1542326237-94b09f99b9a2?q=80&w=1200&auto=format&fit=crop" alt="Product"/>
+        <div class="card-body">
+          <div class="card-title">Minimalist Shirt</div>
+          <div class="card-price">R 529</div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}PageStore{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'store/css/styles.css' %}">
+  </head>
+  <body>
+    <header class="header">
+      <div class="container navbar">
+        <a href="/" class="brand"><span class="dot"></span> PageStore</a>
+        <nav class="nav-links">
+          <a href="/"{% if request.path == '/' %} class="active"{% endif %}>Home</a>
+          <a href="/shop/"{% if request.path|slice:":6" == '/shop/' %} class="active"{% endif %}>Shop</a>
+          <a href="/about/"{% if request.path|slice:":7" == '/about/' %} class="active"{% endif %}>About</a>
+          <a href="/contact/"{% if request.path|slice:":9" == '/contact/' %} class="active"{% endif %}>Contact</a>
+        </nav>
+        <div class="nav-actions">
+          <a class="icon-button" href="#" title="Search">
+            <span>🔍</span>
+          </a>
+          <a class="icon-button" href="#" title="Cart">
+            <span>🛒</span>
+            <span id="cart-count" class="badge" style="display:none;">0</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <div>© {% now 'Y' %} PageStore · Affordable · Stylish · Accessible</div>
+      </div>
+    </footer>
+
+    <script src="{% static 'store/js/main.js' %}"></script>
+  </body>
+</html>

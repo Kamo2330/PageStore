@@ -1,0 +1,63 @@
+{% extends 'store/base.html' %}
+{% block title %}Home · PageStore{% endblock %}
+{% block content %}
+  <section class="hero">
+    <div class="hero-card">
+      <img src="https://images.unsplash.com/photo-1544739313-2266b922f7f5?q=80&w=2000&auto=format&fit=crop" alt="African fashion banner"/>
+      <div class="overlay"></div>
+      <div class="content">
+        <h1>Welcome to PageStore – Fashion for Everyone</h1>
+        <p>Discover new arrivals and exclusive deals.</p>
+        <a class="button" href="/shop/">Shop Now</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <h2>Featured Categories</h2>
+    </div>
+    <div class="category-pills">
+      <a class="pill" href="/shop/?category=men">Men</a>
+      <a class="pill" href="/shop/?category=women">Women</a>
+      <a class="pill" href="/shop/?category=kids">Kids</a>
+      <a class="pill" href="/shop/?category=accessories">Accessories</a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <h2>New Arrivals</h2>
+      <a href="/shop/">View all</a>
+    </div>
+    <div class="grid">
+      {% for i in "1234" %}
+      <a class="card" href="/shop/">
+        <img src="https://images.unsplash.com/photo-1517935706615-2717063c2225?q=80&w=1200&auto=format&fit=crop" alt="Product"/>
+        <div class="card-body">
+          <div class="card-title">Essential Tee</div>
+          <div class="card-price">R 450</div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <h2>Sale</h2>
+      <a href="/shop/?sale=true">View all</a>
+    </div>
+    <div class="grid">
+      {% for i in "1234" %}
+      <a class="card" href="/shop/">
+        <img src="https://images.unsplash.com/photo-1504253163759-c23fccaebb55?q=80&w=1200&auto=format&fit=crop" alt="Product"/>
+        <div class="card-body">
+          <div class="card-title">Classic Hoodie</div>
+          <div class="card-price"><s>R 899</s> R 649</div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+{% endblock %}

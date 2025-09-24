@@ -1,0 +1,24 @@
+{% extends 'store/base.html' %}
+{% block title %}Contact · PageStore{% endblock %}
+{% block content %}
+  <section class="section">
+    <div class="section-header">
+      <h1>Contact Us</h1>
+    </div>
+    <form class="grid" method="post">
+      {% csrf_token %}
+      <input class="input" type="text" name="name" placeholder="Your name" required />
+      <input class="input" type="email" name="email" placeholder="Your email" required />
+      <input class="input" type="text" name="subject" placeholder="Subject" />
+      <textarea class="input" name="message" placeholder="Message" rows="6" style="height:auto;padding:12px;"></textarea>
+      <button type="submit">Send</button>
+    </form>
+    <div class="section" style="padding-top:14px;">
+      <p><strong>Store Address:</strong> 123 Market Street, Johannesburg</p>
+      <p><strong>WhatsApp:</strong> <a href="https://wa.me/27123456789" target="_blank" rel="noopener">+27 12 345 6789</a></p>
+      <p><strong>Phone:</strong> <a href="tel:+27123456789">+27 12 345 6789</a></p>
+      <p><strong>Instagram:</strong> <a href="https://instagram.com/" target="_blank" rel="noopener">@pagestore</a></p>
+      <p><strong>Facebook:</strong> <a href="https://facebook.com/" target="_blank" rel="noopener">PageStore</a></p>
+    </div>
+  </section>
+{% endblock %}
