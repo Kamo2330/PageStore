@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540">
+  <rect width="960" height="540" fill="#0f172a"/>
+  <text x="48" y="64" fill="#14b8a6" font-family="Georgia, serif" font-size="28">PageStore</text>
+  <text x="48" y="140" fill="#f8fafc" font-family="Georgia, serif" font-size="32">Shop</text>
+  <rect x="48" y="180" width="200" height="220" rx="8" fill="#1e293b" stroke="#334155"/>
+  <rect x="268" y="180" width="200" height="220" rx="8" fill="#1e293b" stroke="#334155"/>
+  <rect x="488" y="180" width="200" height="220" rx="8" fill="#1e293b" stroke="#334155"/>
+  <rect x="708" y="180" width="200" height="220" rx="8" fill="#1e293b" stroke="#334155"/>
+  <text x="68" y="380" fill="#f8fafc" font-family="sans-serif" font-size="14">Essential Tee · R 450</text>
+</svg>
