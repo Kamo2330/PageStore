@@ -1,24 +1,45 @@
 {% extends 'store/base.html' %}
 {% block title %}Contact · PageStore{% endblock %}
 {% block content %}
-  <section class="section">
-    <div class="section-header">
-      <h1>Contact Us</h1>
-    </div>
-    <form class="grid" method="post">
-      {% csrf_token %}
-      <input class="input" type="text" name="name" placeholder="Your name" required />
-      <input class="input" type="email" name="email" placeholder="Your email" required />
-      <input class="input" type="text" name="subject" placeholder="Subject" />
-      <textarea class="input" name="message" placeholder="Message" rows="6" style="height:auto;padding:12px;"></textarea>
-      <button type="submit">Send</button>
-    </form>
-    <div class="section" style="padding-top:14px;">
-      <p><strong>Store Address:</strong> 123 Market Street, Johannesburg</p>
-      <p><strong>WhatsApp:</strong> <a href="https://wa.me/27123456789" target="_blank" rel="noopener">+27 12 345 6789</a></p>
-      <p><strong>Phone:</strong> <a href="tel:+27123456789">+27 12 345 6789</a></p>
-      <p><strong>Instagram:</strong> <a href="https://instagram.com/" target="_blank" rel="noopener">@pagestore</a></p>
-      <p><strong>Facebook:</strong> <a href="https://facebook.com/" target="_blank" rel="noopener">PageStore</a></p>
-    </div>
-  </section>
+  <div class="container">
+    <section class="section">
+      <div class="section-header">
+        <div>
+          <span class="section-kicker">Support</span>
+          <h1>Contact us</h1>
+          <p class="page-intro">Questions about sizing, orders, or wholesale? Drop a note — this demo confirms your message on submit.</p>
+        </div>
+      </div>
+
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+
+      <div class="contact-grid">
+        <form class="form-stack contact-card" method="post" action="{% url 'contact' %}">
+          {% csrf_token %}
+          <h3>Send a message</h3>
+          <input class="input" type="text" name="name" placeholder="Your name" required />
+          <input class="input" type="email" name="email" placeholder="Your email" required />
+          <input class="input" type="text" name="subject" placeholder="Subject" />
+          <textarea class="input" name="message" placeholder="How can we help?" rows="6" required></textarea>
+          <button class="btn btn-primary" type="submit">Send message</button>
+        </form>
+
+        <div class="contact-card">
+          <h3>Visit &amp; chat</h3>
+          <p><strong style="color:var(--ink);">Store</strong><br />123 Market Street, Johannesburg</p>
+          <p><strong style="color:var(--ink);">WhatsApp</strong><br /><a href="https://wa.me/27123456789" target="_blank" rel="noopener">+27 12 345 6789</a></p>
+          <p><strong style="color:var(--ink);">Phone</strong><br /><a href="tel:+27123456789">+27 12 345 6789</a></p>
+          <p><strong style="color:var(--ink);">Social</strong><br />
+            <a href="https://instagram.com/" target="_blank" rel="noopener">@pagestore</a>
+            ·
+            <a href="https://facebook.com/" target="_blank" rel="noopener">Facebook</a>
+          </p>
+        </div>
+      </div>
+    </section>
+  </div>
 {% endblock %}

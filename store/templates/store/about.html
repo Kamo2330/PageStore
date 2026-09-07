@@ -1,18 +1,33 @@
 {% extends 'store/base.html' %}
 {% block title %}About · PageStore{% endblock %}
 {% block content %}
-  <section class="section">
-    <div class="section-header">
-      <h1>About PageStore</h1>
-    </div>
-    <p>Why PageStore? We believe great style should be affordable, stylish, and accessible for everyone across Africa.</p>
-    <h3>Mission & Values</h3>
-    <ul>
-      <li>Affordable: fair pricing in Rands.</li>
-      <li>Stylish: modern, minimal designs that fit your lifestyle.</li>
-      <li>Accessible: mobile-first, fast delivery to your door.</li>
-    </ul>
-    <h3>Sustainability & Quality</h3>
-    <p>We partner with suppliers who follow ethical standards and use durable fabrics that last longer, reducing waste.</p>
-  </section>
+  <div class="container">
+    <section class="section prose-panel">
+      <div>
+        <span class="section-kicker">Our story</span>
+        <h1>Built for how Africa dresses</h1>
+        <p class="page-intro">PageStore started with a simple idea: great style shouldn’t cost a fortune or hide behind complicated sizing. We design for heat, hustle, and weekends — and we ship where you live.</p>
+      </div>
+
+      <div class="value-grid">
+        <div class="value-item">
+          <h3>Affordable</h3>
+          <p>Clear Rand pricing, no surprise markups. Essentials stay within reach so you can refresh your wardrobe often.</p>
+        </div>
+        <div class="value-item">
+          <h3>Stylish</h3>
+          <p>Clean silhouettes and modern cuts — from city hoodies to linen shirts that survive a long summer day.</p>
+        </div>
+        <div class="value-item">
+          <h3>Accessible</h3>
+          <p>Mobile-first shopping, WhatsApp support, and delivery that doesn’t treat your suburb as an afterthought.</p>
+        </div>
+      </div>
+
+      <div class="value-item">
+        <h3>Quality that lasts</h3>
+        <p>We work with suppliers who meet ethical standards and choose fabrics that hold up to wash after wash — fewer replacements, less waste, better value.</p>
+      </div>
+    </section>
+  </div>
 {% endblock %}

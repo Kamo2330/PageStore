@@ -1,0 +1,111 @@
+{% extends 'store/base.html' %}
+{% block title %}Bag · PageStore{% endblock %}
+{% block content %}
+  <div class="container">
+    <section class="section">
+      <div class="section-header">
+        <div>
+          <span class="section-kicker">Your bag</span>
+          <h1>Cart</h1>
+          <p class="page-intro">Demo cart stored in your browser — add pieces from any product page.</p>
+        </div>
+      </div>
+
+      <div id="cart-empty" class="empty-state" hidden>
+        <p>Your bag is empty. Browse the shop and add something you like.</p>
+        <a class="btn btn-primary" href="{% url 'shop' %}" style="margin-top:14px;">Continue shopping</a>
+      </div>
+
+      <div id="cart-filled" hidden>
+        <div class="cart-list" id="cart-list"></div>
+        <div class="cart-summary">
+          <div>
+            <div class="results-meta">Demo checkout — no payment taken</div>
+            <div class="total">Total · R <span id="cart-total">0</span></div>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <a class="btn btn-outline" href="{% url 'shop' %}">Keep shopping</a>
+            <button class="btn btn-primary" type="button" id="checkout-demo">Checkout (demo)</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  (function () {
+    if (!window.PageStore) return;
+
+    var listEl = document.getElementById("cart-list");
+    var emptyEl = document.getElementById("cart-empty");
+    var filledEl = document.getElementById("cart-filled");
+    var totalEl = document.getElementById("cart-total");
+    var checkoutBtn = document.getElementById("checkout-demo");
+
+    function money(n) {
+      return Number(n || 0).toLocaleString("en-ZA");
+    }
+
+    function render() {
+      var items = window.PageStore.getCart();
+      if (!items.length) {
+        emptyEl.hidden = false;
+        filledEl.hidden = true;
+        listEl.innerHTML = "";
+        return;
+      }
+      emptyEl.hidden = true;
+      filledEl.hidden = false;
+      var total = 0;
+      listEl.innerHTML = items.map(function (item, index) {
+        var line = (item.price || 0) * (item.quantity || 1);
+        total += line;
+        return (
+          '<article class="cart-item" data-index="' + index + '">' +
+            '<img src="' + (item.image || "") + '" alt="" />' +
+            '<div>' +
+              '<h3>' + (item.name || "Item") + '</h3>' +
+              '<div class="meta">Size ' + (item.size || "—") + ' · R ' + money(item.price) + '</div>' +
+              '<div class="qty-controls" style="margin-top:10px;">' +
+                '<button type="button" data-action="dec" aria-label="Decrease">−</button>' +
+                '<span>' + (item.quantity || 1) + '</span>' +
+                '<button type="button" data-action="inc" aria-label="Increase">+</button>' +
+              '</div>' +
+              '<button type="button" class="remove-btn" data-action="remove">Remove</button>' +
+            '</div>' +
+            '<div><strong>R ' + money(line) + '</strong></div>' +
+          '</article>'
+        );
+      }).join("");
+      totalEl.textContent = money(total);
+    }
+
+    listEl.addEventListener("click", function (e) {
+      var btn = e.target.closest("[data-action]");
+      if (!btn) return;
+      var row = btn.closest(".cart-item");
+      var index = Number(row.getAttribute("data-index"));
+      var items = window.PageStore.getCart();
+      var item = items[index];
+      if (!item) return;
+      var action = btn.getAttribute("data-action");
+      if (action === "inc") item.quantity = (item.quantity || 1) + 1;
+      if (action === "dec") item.quantity = Math.max(1, (item.quantity || 1) - 1);
+      if (action === "remove") items.splice(index, 1);
+      window.PageStore.setCart(items);
+      window.PageStore.updateBadge();
+      render();
+    });
+
+    if (checkoutBtn) {
+      checkoutBtn.addEventListener("click", function () {
+        alert("Demo only — no payment is processed. Thanks for browsing PageStore!");
+      });
+    }
+
+    render();
+  })();
+</script>
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends 'store/base.html' %}
+{% block title %}{{ product.name }} · PageStore{% endblock %}
+{% block content %}
+  <div class="container">
+    <section class="product-detail">
+      <div class="product-detail-media">
+        <img src="{{ product.image }}" alt="{{ product.name }}" />
+      </div>
+      <div class="product-detail-info">
+        <span class="section-kicker">{% if product.badge %}{{ product.badge }} · {% endif %}{{ product.gender|title }}</span>
+        <h1>{{ product.name }}</h1>
+        <div class="price-row">
+          {% if product.compare_at %}<s style="color:var(--muted);font-weight:500;font-size:1.05rem;">R {{ product.compare_at }}</s>{% endif %}
+          <span{% if product.compare_at %} style="color:var(--sale);"{% endif %}>R {{ product.price }}</span>
+        </div>
+        <p class="page-intro" style="margin-bottom:18px;">{{ product.blurb }} Soft hand-feel, easy care, and a fit you’ll reach for all week.</p>
+
+        <label class="section-kicker" for="size-picker">Size</label>
+        <div class="size-row" id="size-picker" role="group" aria-label="Choose size">
+          {% for size in product.sizes %}
+          <button type="button" class="size-chip{% if forloop.first %} active{% endif %}" data-size="{{ size }}">{{ size }}</button>
+          {% endfor %}
+        </div>
+
+        <button
+          type="button"
+          class="btn btn-primary btn-block"
+          id="add-to-cart"
+          data-id="{{ product.id }}"
+          data-name="{{ product.name }}"
+          data-price="{{ product.price }}"
+          data-image="{{ product.image }}"
+        >
+          Add to bag
+        </button>
+        <p id="cart-feedback" class="results-meta" style="margin-top:12px;" hidden>Added to your bag.</p>
+      </div>
+    </section>
+
+    {% if related %}
+    <section class="section">
+      <div class="section-header">
+        <div>
+          <span class="section-kicker">More like this</span>
+          <h2>You may also like</h2>
+        </div>
+      </div>
+      <div class="product-grid">
+        {% for item in related %}
+        <a class="product-card" href="{% url 'product' item.id %}">
+          <div class="product-media">
+            <img src="{{ item.image }}" alt="{{ item.name }}" loading="lazy" />
+          </div>
+          <div class="product-body">
+            <div class="product-title">{{ item.name }}</div>
+            <div class="product-price"><span class="now">R {{ item.price }}</span></div>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+  </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  (function () {
+    var chips = document.querySelectorAll(".size-chip");
+    var selected = chips.length ? chips[0].getAttribute("data-size") : "One size";
+    chips.forEach(function (chip) {
+      chip.addEventListener("click", function () {
+        chips.forEach(function (c) { c.classList.remove("active"); });
+        chip.classList.add("active");
+        selected = chip.getAttribute("data-size");
+      });
+    });
+
+    var btn = document.getElementById("add-to-cart");
+    var feedback = document.getElementById("cart-feedback");
+    if (!btn || !window.PageStore) return;
+    btn.addEventListener("click", function () {
+      window.PageStore.addItem({
+        id: btn.getAttribute("data-id"),
+        name: btn.getAttribute("data-name"),
+        price: Number(btn.getAttribute("data-price")),
+        image: btn.getAttribute("data-image"),
+        size: selected,
+        quantity: 1,
+      });
+      if (feedback) {
+        feedback.hidden = false;
+        feedback.textContent = "Added · size " + selected + ". View bag anytime from the header.";
+      }
+    });
+  })();
+</script>
+{% endblock %}

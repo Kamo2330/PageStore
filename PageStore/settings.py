@@ -26,8 +26,9 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    # Before staticfiles so our custom runserver (browser + free port) wins
     'store',
+    'django.contrib.staticfiles',
 ]
 
 MIDDLEWARE = [

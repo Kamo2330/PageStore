@@ -1,63 +1,101 @@
 {% extends 'store/base.html' %}
-{% block title %}Home · PageStore{% endblock %}
+{% block title %}PageStore · Fashion for everyday Africa{% endblock %}
 {% block content %}
-  <section class="hero">
-    <div class="hero-card">
-      <img src="https://images.unsplash.com/photo-1544739313-2266b922f7f5?q=80&w=2000&auto=format&fit=crop" alt="African fashion banner"/>
-      <div class="overlay"></div>
-      <div class="content">
-        <h1>Welcome to PageStore – Fashion for Everyone</h1>
-        <p>Discover new arrivals and exclusive deals.</p>
-        <a class="button" href="/shop/">Shop Now</a>
+  <section class="hero" aria-label="PageStore hero">
+    <div class="hero-media">
+      <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=2200&auto=format&fit=crop" alt="Models in contemporary street fashion" />
+      <div class="hero-shade"></div>
+    </div>
+    <div class="hero-content">
+      <p class="hero-brand">PageStore</p>
+      <p class="hero-line">Fashion that fits real life.</p>
+      <p class="hero-sub">New arrivals and sharp essentials — priced in Rands, made for cities from Joburg to Lagos.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="{% url 'shop' %}">Shop the collection</a>
+        <a class="btn btn-ghost" href="{% url 'shop' %}?sale=true">See what’s on sale</a>
       </div>
     </div>
   </section>
 
-  <section class="section">
-    <div class="section-header">
-      <h2>Featured Categories</h2>
-    </div>
-    <div class="category-pills">
-      <a class="pill" href="/shop/?category=men">Men</a>
-      <a class="pill" href="/shop/?category=women">Women</a>
-      <a class="pill" href="/shop/?category=kids">Kids</a>
-      <a class="pill" href="/shop/?category=accessories">Accessories</a>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="section-header">
-      <h2>New Arrivals</h2>
-      <a href="/shop/">View all</a>
-    </div>
-    <div class="grid">
-      {% for i in "1234" %}
-      <a class="card" href="/shop/">
-        <img src="https://images.unsplash.com/photo-1517935706615-2717063c2225?q=80&w=1200&auto=format&fit=crop" alt="Product"/>
-        <div class="card-body">
-          <div class="card-title">Essential Tee</div>
-          <div class="card-price">R 450</div>
+  <div class="container">
+    <section class="section reveal">
+      <div class="section-header">
+        <div>
+          <span class="section-kicker">Browse</span>
+          <h2>Shop by mood</h2>
         </div>
-      </a>
-      {% endfor %}
-    </div>
-  </section>
+      </div>
+      <div class="category-row">
+        <a class="category-tile" href="{% url 'shop' %}?gender=men">
+          <img src="https://images.unsplash.com/photo-1617137968427-85924c800a22?q=80&w=900&auto=format&fit=crop" alt="" />
+          <span>Men</span>
+        </a>
+        <a class="category-tile" href="{% url 'shop' %}?gender=women">
+          <img src="https://images.unsplash.com/photo-1485968579580-b6d095142e6e?q=80&w=900&auto=format&fit=crop" alt="" />
+          <span>Women</span>
+        </a>
+        <a class="category-tile" href="{% url 'shop' %}?gender=kids">
+          <img src="https://images.unsplash.com/photo-1503919545889-aef636e10ad1?q=80&w=900&auto=format&fit=crop" alt="" />
+          <span>Kids</span>
+        </a>
+        <a class="category-tile" href="{% url 'shop' %}?gender=accessories">
+          <img src="https://images.unsplash.com/photo-1590874103328-eac38a67478a?q=80&w=900&auto=format&fit=crop" alt="" />
+          <span>Accessories</span>
+        </a>
+      </div>
+    </section>
 
-  <section class="section">
-    <div class="section-header">
-      <h2>Sale</h2>
-      <a href="/shop/?sale=true">View all</a>
-    </div>
-    <div class="grid">
-      {% for i in "1234" %}
-      <a class="card" href="/shop/">
-        <img src="https://images.unsplash.com/photo-1504253163759-c23fccaebb55?q=80&w=1200&auto=format&fit=crop" alt="Product"/>
-        <div class="card-body">
-          <div class="card-title">Classic Hoodie</div>
-          <div class="card-price"><s>R 899</s> R 649</div>
+    <section class="section reveal reveal-delay-1">
+      <div class="section-header">
+        <div>
+          <span class="section-kicker">Just in</span>
+          <h2>New arrivals</h2>
         </div>
-      </a>
-      {% endfor %}
-    </div>
-  </section>
+        <a class="section-link" href="{% url 'shop' %}">View all</a>
+      </div>
+      <div class="product-grid">
+        {% for product in arrivals %}
+        <a class="product-card" href="{% url 'product' product.id %}">
+          <div class="product-media">
+            {% if product.badge %}<span class="product-badge">{{ product.badge }}</span>{% endif %}
+            <img src="{{ product.image }}" alt="{{ product.name }}" loading="lazy" />
+          </div>
+          <div class="product-body">
+            <div class="product-title">{{ product.name }}</div>
+            <div class="product-blurb">{{ product.blurb }}</div>
+            <div class="product-price"><span class="now">R {{ product.price }}</span></div>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="section reveal reveal-delay-2">
+      <div class="section-header">
+        <div>
+          <span class="section-kicker">Limited time</span>
+          <h2>On sale</h2>
+        </div>
+        <a class="section-link" href="{% url 'shop' %}?sale=true">View all</a>
+      </div>
+      <div class="product-grid">
+        {% for product in sale_items %}
+        <a class="product-card" href="{% url 'product' product.id %}">
+          <div class="product-media">
+            <span class="product-badge sale">Sale</span>
+            <img src="{{ product.image }}" alt="{{ product.name }}" loading="lazy" />
+          </div>
+          <div class="product-body">
+            <div class="product-title">{{ product.name }}</div>
+            <div class="product-blurb">{{ product.blurb }}</div>
+            <div class="product-price">
+              <s>R {{ product.compare_at }}</s>
+              <span class="now sale">R {{ product.price }}</span>
+            </div>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    </section>
+  </div>
 {% endblock %}
