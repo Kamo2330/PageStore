@@ -93,10 +93,10 @@ python manage.py migrate
 python manage.py runserver
 ```
 
-Open **http://127.0.0.1:8000/**  
-Shop: **http://127.0.0.1:8000/shop/**
+Open the URL printed by `runserver` (on many Windows PCs **8000 is reserved**, so it may be **http://127.0.0.1:7000/** or **http://127.0.0.1:9000/**).  
+Shop: add `/shop/` to that URL.
 
-> Stop any other project on port 8000 first, or this site will not show.
+No Docker is required. The site uses SQLite locally.
 
 ---
 

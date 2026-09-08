@@ -1,8 +1,9 @@
-"""Runserver for this project only: free the port, then open the browser."""
+"""Runserver for this project only: use a free port, then open the browser."""
 
 from __future__ import annotations
 
 import os
+import socket
 import subprocess
 import sys
 import threading
@@ -12,11 +13,13 @@ from django.contrib.staticfiles.management.commands.runserver import (
     Command as BaseRunserverCommand,
 )
 
+FALLBACK_PORTS = (8000, 9000, 7000, 5000, 4000)
+
 
 class Command(BaseRunserverCommand):
     help = (
         'Starts a development server for the project in this folder, '
-        'frees the port if another app is using it, and opens the browser.'
+        'picks a port Windows will allow, and opens the browser.'
     )
 
     def add_arguments(self, parser):
@@ -29,8 +32,20 @@ class Command(BaseRunserverCommand):
 
     def handle(self, *args, **options):
         self._open_browser = not options.pop('no_browser', False)
-        host, port = self._parse_addrport(options.get('addrport') or '')
-        self._free_port(port)
+        addrport = options.get('addrport') or ''
+        host, port = self._parse_addrport(addrport)
+
+        if addrport:
+            self._free_port(port)
+        else:
+            port = self._first_bindable_port(host, FALLBACK_PORTS)
+            options['addrport'] = str(port)
+            if port != int(self.default_port):
+                self.stdout.write(self.style.WARNING(
+                    f'Port {self.default_port} is reserved by Windows. '
+                    f'Using http://127.0.0.1:{port}/'
+                ))
+
         self._browser_host = '127.0.0.1' if host in ('0.0.0.0', '::', '') else host
         self._browser_port = port
         return super().handle(*args, **options)
@@ -53,6 +68,21 @@ class Command(BaseRunserverCommand):
             host, _, port = addrport.rpartition(':')
             return (host or default_addr), int(port or default_port)
         return addrport, default_port
+
+    def _can_bind(self, host: str, port: int) -> bool:
+        bind_host = '127.0.0.1' if host in ('0.0.0.0', '::', '') else host
+        try:
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+                sock.bind((bind_host, port))
+            return True
+        except OSError:
+            return False
+
+    def _first_bindable_port(self, host: str, ports: tuple[int, ...]) -> int:
+        for port in ports:
+            if self._can_bind(host, port):
+                return port
+        return ports[0]
 
     def _free_port(self, port: int):
         """Stop whatever is already listening on this port (Windows)."""
